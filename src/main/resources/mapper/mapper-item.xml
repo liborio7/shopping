@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lm.shopping.items.persistence.mapper.ItemMapper">
+
+    <resultMap id="itemEntity" type="Item">
+        <result column="id" property="id" typeHandler="UUIDTypeHandler"/>
+        <result column="name" property="name"/>
+        <result column="category" property="category"/>
+        <result column="price" property="price"/>
+        <result column="imported" property="imported"/>
+    </resultMap>
+
+    <select id="loadById" parameterType="Item"
+            resultMap="itemEntity">
+        SELECT *
+        FROM `item`
+        WHERE 'id' = #{id}
+    </select>
+
+    <select id="loadAll" resultMap="itemEntity">
+        SELECT *
+        FROM `item`
+    </select>
+
+</mapper>

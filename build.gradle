@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+group 'com.lm.shopping'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+mainClassName = 'com.lm.shopping.App'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Server
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-grizzly2-http', version: '2.17'
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.17'
+
+    // Database
+    compile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
+
+    // Logging
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.2'
+
+    // Utilities
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    compile group: 'io.projectreactor', name: 'reactor-core', version: '3.0.7.RELEASE'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.8.9'
+
+    // Tests
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.0'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
+    testCompile group: 'io.github.benas', name: 'random-beans', version: '3.7.0'
+    testCompile group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-jetty', version: '2.17'
+}
