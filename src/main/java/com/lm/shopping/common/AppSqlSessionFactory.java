@@ -22,7 +22,7 @@ public class AppSqlSessionFactory extends DefaultSqlSessionFactory {
 
     private void initDatabase() {
         try {
-            new ScriptRunner(openSession().getConnection()).runScript(new BufferedReader(Resources.getResourceAsReader("database.sql")));
+            new ScriptRunner(openSession().getConnection()).runScript(new BufferedReader(Resources.getResourceAsReader("migration.sql")));
 
         } catch (Exception e) {
             logger.error("error while initializing database", e);
