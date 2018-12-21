@@ -22,14 +22,14 @@ public class ItemsService {
     @Inject private ItemConverter itemConverter;
 
     public Optional<ItemBean> getItem(UUID id) {
-        logger.debug("get item by id {}", id);
+        logger.info("get item by id {}", id);
 
         return Optional.ofNullable(itemDao.loadById(new ItemBuilder().withId(id).build()))
                 .map(itemConverter::convertToBean);
     }
 
     public List<ItemBean> getItems() {
-        logger.debug("get items");
+        logger.info("get items");
 
         return itemDao.loadAll().stream()
                 .map(itemConverter::convertToBean)

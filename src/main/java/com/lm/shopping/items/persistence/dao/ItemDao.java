@@ -29,7 +29,9 @@ public class ItemDao {
 
     Item loadById(Item entity, SqlSession sqlSession) {
         logger.debug("load by id: {}", entity);
-        return sqlSession.getMapper(ItemMapper.class).loadById(entity);
+        Item result = sqlSession.getMapper(ItemMapper.class).loadById(entity);
+        logger.debug("entity loaded: {}", result);
+        return result;
     }
 
     //============ load all ============//
@@ -44,6 +46,8 @@ public class ItemDao {
 
     List<Item> loadAll(SqlSession sqlSession) {
         logger.debug("load all");
-        return sqlSession.getMapper(ItemMapper.class).loadAll();
+        List<Item> result = sqlSession.getMapper(ItemMapper.class).loadAll();
+        logger.debug("#{} entities loaded", result.size());
+        return result;
     }
 }

@@ -19,8 +19,8 @@ public class SalesTaxesService {
 
     @Inject private ItemsService itemsService;
 
-    public SalesTaxesItemBean calculateSaleTax(UUID itemId, Long amount) throws ItemNotFoundException, InvalidItemAmountException {
-        logger.debug("calculate sales taxes for #{} item id {}", amount, itemId);
+    public SalesTaxesItemBean calculateSalesTaxes(UUID itemId, Long amount) throws ItemNotFoundException, InvalidItemAmountException {
+        logger.info("calculate sales taxes for #{} item id {}", amount, itemId);
 
         if (amount <= 0) {
             logger.warn("wrong item amount {}", amount);
@@ -30,7 +30,7 @@ public class SalesTaxesService {
         ItemBean itemBean = itemsService.getItem(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("no item found with id " + itemId));
 
-        Long tax = calculateSaleTax(itemBean);
+        Long tax = calculateSalesTaxes(itemBean);
         return new SalesTaxesItemBeanBuilder()
                 .withItem(itemBean)
                 .withAmount(amount)
@@ -41,7 +41,9 @@ public class SalesTaxesService {
 
     //============
 
-    private Long calculateSaleTax(ItemBean item) {
+    private Long calculateSalesTaxes(ItemBean item) {
+        logger.info("calculate sales taxes for item: {}", item);
+
         Long tax = 0L;
         tax += calculateCategoryTax(item);
         if (item.getImported()) {

@@ -32,7 +32,7 @@ public class SalesTaxesDelegate {
             Long total = 0L;
             for (SalesTaxesItemRequestBean requestBean : requestBeans) {
 
-                SalesTaxesItemBean salesTaxesItemBean = salesTaxesService.calculateSaleTax(requestBean.getItemId(), requestBean.getAmount());
+                SalesTaxesItemBean salesTaxesItemBean = salesTaxesService.calculateSalesTaxes(requestBean.getItemId(), requestBean.getAmount());
                 ItemBean item = salesTaxesItemBean.getItem();
 
                 items.add(new SalesTaxesItemResponseBeanBuilder()
