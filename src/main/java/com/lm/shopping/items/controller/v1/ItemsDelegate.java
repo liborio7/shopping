@@ -3,7 +3,7 @@ package com.lm.shopping.items.controller.v1;
 import com.lm.shopping.common.service.PriceService;
 import com.lm.shopping.items.controller.bean.ItemResponseBean;
 import com.lm.shopping.items.controller.bean.ItemResponseBeanBuilder;
-import com.lm.shopping.items.service.ItemsService;
+import com.lm.shopping.items.business.ItemsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

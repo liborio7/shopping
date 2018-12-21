@@ -1,4 +1,4 @@
-package com.lm.shopping.items.service.bean;
+package com.lm.shopping.items.business.bean;
 
 import com.lm.shopping.items.enums.ItemCategoryEnum;
 

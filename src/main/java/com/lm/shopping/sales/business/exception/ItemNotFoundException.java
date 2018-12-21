@@ -1,4 +1,4 @@
-package com.lm.shopping.sales.service.exception;
+package com.lm.shopping.sales.business.exception;
 
 public class ItemNotFoundException extends Exception {
 

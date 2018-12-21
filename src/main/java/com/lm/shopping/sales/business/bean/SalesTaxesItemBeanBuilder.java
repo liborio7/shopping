@@ -1,6 +1,6 @@
-package com.lm.shopping.sales.service.bean;
+package com.lm.shopping.sales.business.bean;
 
-import com.lm.shopping.items.service.bean.ItemBean;
+import com.lm.shopping.items.business.bean.ItemBean;
 
 public class SalesTaxesItemBeanBuilder {
     private ItemBean item;

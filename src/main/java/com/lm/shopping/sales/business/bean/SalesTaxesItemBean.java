@@ -1,7 +1,7 @@
-package com.lm.shopping.sales.service.bean;
+package com.lm.shopping.sales.business.bean;
 
 import com.lm.shopping.common.bean.LoggableBean;
-import com.lm.shopping.items.service.bean.ItemBean;
+import com.lm.shopping.items.business.bean.ItemBean;
 
 public class SalesTaxesItemBean extends LoggableBean {
 

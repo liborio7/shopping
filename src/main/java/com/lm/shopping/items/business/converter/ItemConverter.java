@@ -1,8 +1,8 @@
-package com.lm.shopping.items.service.converter;
+package com.lm.shopping.items.business.converter;
 
 import com.lm.shopping.items.persistence.model.Item;
-import com.lm.shopping.items.service.bean.ItemBean;
-import com.lm.shopping.items.service.bean.ItemBeanBuilder;
+import com.lm.shopping.items.business.bean.ItemBean;
+import com.lm.shopping.items.business.bean.ItemBeanBuilder;
 
 import javax.inject.Singleton;
 

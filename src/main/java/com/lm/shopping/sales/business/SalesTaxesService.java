@@ -1,11 +1,11 @@
-package com.lm.shopping.sales.service;
+package com.lm.shopping.sales.business;
 
-import com.lm.shopping.items.service.ItemsService;
-import com.lm.shopping.items.service.bean.ItemBean;
-import com.lm.shopping.sales.service.bean.SalesTaxesItemBean;
-import com.lm.shopping.sales.service.bean.SalesTaxesItemBeanBuilder;
-import com.lm.shopping.sales.service.exception.InvalidItemAmountException;
-import com.lm.shopping.sales.service.exception.ItemNotFoundException;
+import com.lm.shopping.items.business.ItemsService;
+import com.lm.shopping.items.business.bean.ItemBean;
+import com.lm.shopping.sales.business.bean.SalesTaxesItemBean;
+import com.lm.shopping.sales.business.bean.SalesTaxesItemBeanBuilder;
+import com.lm.shopping.sales.business.exception.InvalidItemAmountException;
+import com.lm.shopping.sales.business.exception.ItemNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

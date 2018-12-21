@@ -1,9 +1,9 @@
-package com.lm.shopping.items.service;
+package com.lm.shopping.items.business;
 
 import com.lm.shopping.items.persistence.dao.ItemDao;
 import com.lm.shopping.items.persistence.model.ItemBuilder;
-import com.lm.shopping.items.service.bean.ItemBean;
-import com.lm.shopping.items.service.converter.ItemConverter;
+import com.lm.shopping.items.business.bean.ItemBean;
+import com.lm.shopping.items.business.converter.ItemConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
