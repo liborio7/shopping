@@ -6,7 +6,7 @@ import com.lm.shopping.common.enums.ItemCategoryEnum;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class SalesTaxesItemResponseBean extends LoggableBean {
+public class SalesItemResponseBean extends LoggableBean {
 
     private UUID id;
     private Long amount;
@@ -15,10 +15,10 @@ public class SalesTaxesItemResponseBean extends LoggableBean {
     private BigDecimal price;
     private Boolean imported;
 
-    public SalesTaxesItemResponseBean() {
+    public SalesItemResponseBean() {
     }
 
-    public SalesTaxesItemResponseBean(UUID id, Long amount, String name, ItemCategoryEnum category, BigDecimal price, Boolean imported) {
+    public SalesItemResponseBean(UUID id, Long amount, String name, ItemCategoryEnum category, BigDecimal price, Boolean imported) {
         this.id = id;
         this.amount = amount;
         this.name = name;

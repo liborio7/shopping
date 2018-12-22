@@ -17,25 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-public class SalesTaxesDelegate {
-    private final Logger logger = LoggerFactory.getLogger(SalesTaxesDelegate.class);
+public class SalesDelegate {
+    private final Logger logger = LoggerFactory.getLogger(SalesDelegate.class);
 
     @Inject private PriceService priceService;
     @Inject private SalesTaxesService salesTaxesService;
 
-    public SalesTaxesResponseBean calculateSalesTaxes(SalesTaxesItemRequestBean[] requestBeans) {
-        logger.info("calculate sales taxes for #{} items", requestBeans.length);
+    public SalesResponseBean insertSales(SalesItemRequestBean[] requestBeans) {
+        logger.info("insert #{} items sales", requestBeans.length);
 
         try {
-            List<SalesTaxesItemResponseBean> items = new ArrayList<>();
+            List<SalesItemResponseBean> items = new ArrayList<>();
             Long salesTaxes = 0L;
             Long total = 0L;
-            for (SalesTaxesItemRequestBean requestBean : requestBeans) {
+            for (SalesItemRequestBean requestBean : requestBeans) {
 
                 SalesTaxesItemBean salesTaxesItemBean = salesTaxesService.calculateSalesTaxes(requestBean.getItemId(), requestBean.getAmount());
                 ItemBean item = salesTaxesItemBean.getItem();
 
-                items.add(new SalesTaxesItemResponseBeanBuilder()
+                items.add(new SalesItemResponseBeanBuilder()
                         .withId(item.getId())
                         .withAmount(salesTaxesItemBean.getAmount())
                         .withName(item.getName())
@@ -47,7 +47,7 @@ public class SalesTaxesDelegate {
                 total += salesTaxesItemBean.getTotal();
             }
 
-            return new SalesTaxesResponseBeanBuilder()
+            return new SalesResponseBeanBuilder()
                     .withItems(items)
                     .withSalesTaxes(priceService.toBigDecimal(salesTaxes))
                     .withTotal(priceService.toBigDecimal(total))

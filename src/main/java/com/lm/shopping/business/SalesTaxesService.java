@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Singleton
@@ -40,37 +41,37 @@ public class SalesTaxesService {
 
     //============
 
-    private Long calculateSalesTaxes(ItemBean item) {
+    Long calculateSalesTaxes(ItemBean item) {
         logger.info("calculate sales taxes for item: {}", item);
 
-        Long tax = 0L;
-        tax += calculateCategoryTax(item);
+        BigDecimal tax = BigDecimal.ZERO;
+        tax = tax.add(calculateCategoryTax(item));
         if (item.getImported()) {
-            tax += calculateImportTax(item);
+            tax = tax.add(calculateImportTax(item));
         }
-        return tax;
+
+        return roundToNearestFive(tax);
     }
 
-    private long calculateCategoryTax(ItemBean item) {
-        double tax;
+    BigDecimal calculateCategoryTax(ItemBean item) {
         switch (item.getCategory()) {
             case BOOK:
             case FOOD:
             case MEDICAL:
-                return 0L;
+                return BigDecimal.ZERO;
             case OTHER:
             default:
-                tax = 0.1d;
+                return new BigDecimal(item.getPrice())
+                        .multiply(new BigDecimal(0.1d));
         }
-
-        return roundToNearestFive(tax * item.getPrice());
     }
 
-    private long calculateImportTax(ItemBean item) {
-        return roundToNearestFive(0.05f * item.getPrice());
+    BigDecimal calculateImportTax(ItemBean item) {
+        return new BigDecimal(item.getPrice())
+                .multiply(new BigDecimal(0.05d));
     }
 
-    private long roundToNearestFive(double price) {
-        return 5 * (Math.round(price / 5));
+    Long roundToNearestFive(BigDecimal tax) {
+        return 5 * (Math.round(tax.doubleValue() / 5));
     }
 }

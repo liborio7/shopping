@@ -1,7 +1,7 @@
 package com.lm.shopping.controller.sales.v1;
 
-import com.lm.shopping.controller.sales.bean.SalesTaxesItemRequestBean;
-import com.lm.shopping.controller.sales.bean.SalesTaxesResponseBean;
+import com.lm.shopping.controller.sales.bean.SalesItemRequestBean;
+import com.lm.shopping.controller.sales.bean.SalesResponseBean;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,14 +15,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/v1/sales")
 public class SalesController {
 
-    @Inject private SalesTaxesDelegate delegate;
+    @Inject private SalesDelegate delegate;
 
     @POST
-    @Path("/taxes")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public SalesTaxesResponseBean calculateSalesTaxes(SalesTaxesItemRequestBean[] items) {
-        return delegate.calculateSalesTaxes(items);
+    public SalesResponseBean insertSales(SalesItemRequestBean[] items) {
+        return delegate.insertSales(items);
     }
 
 }

@@ -4,15 +4,15 @@ import com.lm.shopping.common.bean.LoggableBean;
 
 import java.util.UUID;
 
-public class SalesTaxesItemRequestBean extends LoggableBean {
+public class SalesItemRequestBean extends LoggableBean {
 
     private UUID itemId;
     private Long amount;
 
-    public SalesTaxesItemRequestBean() {
+    public SalesItemRequestBean() {
     }
 
-    public SalesTaxesItemRequestBean(UUID itemId, Long amount) {
+    public SalesItemRequestBean(UUID itemId, Long amount) {
         this.itemId = itemId;
         this.amount = amount;
     }
