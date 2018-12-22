@@ -12,6 +12,23 @@
         <result column="imported" property="imported"/>
     </resultMap>
 
+    <insert id="insert" parameterType="Item">
+        INSERT INTO `item` (
+            `id`,
+            `name`,
+            `category`,
+            `price`,
+            `imported`
+        )
+        VALUES (
+            #{id},
+            #{name},
+            #{category},
+            #{price},
+            #{imported}
+        )
+    </insert>
+
     <select id="loadById" parameterType="Item" resultMap="itemEntity">
         SELECT *
         FROM `item`

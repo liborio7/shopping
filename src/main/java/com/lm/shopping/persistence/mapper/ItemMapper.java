@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ItemMapper {
 
+    Integer insert(Item entity);
+
     Item loadById(Item entity);
 
     List<Item> loadAll();

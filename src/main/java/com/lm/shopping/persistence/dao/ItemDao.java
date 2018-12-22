@@ -2,6 +2,7 @@ package com.lm.shopping.persistence.dao;
 
 import com.lm.shopping.persistence.mapper.ItemMapper;
 import com.lm.shopping.persistence.model.Item;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -16,6 +17,26 @@ public class ItemDao {
     private Logger logger = LoggerFactory.getLogger(ItemDao.class);
 
     @Inject private SqlSessionFactory sqlSessionFactory;
+
+    //============ insert ============//
+
+    public Item insert(Item entity) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            Item result = insert(entity, sqlSession);
+            sqlSession.commit();
+            return result;
+        }
+    }
+
+    Item insert(Item entity, SqlSession sqlSession) {
+        logger.debug("insert: {}", entity);
+        Integer rowsAffected = sqlSession.getMapper(ItemMapper.class).insert(entity);
+        if (rowsAffected != 1) {
+            throw new PersistenceException();
+        }
+        logger.debug("entity inserted: {}", entity);
+        return entity;
+    }
 
     //============ load by id ============//
 
