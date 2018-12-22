@@ -24,7 +24,7 @@ public class ItemConverterTest {
         ItemBean result = converter.convertToBean(item);
 
         // then
-        assertThat(result.getName()).isEqualTo(item.getId());
+        assertThat(result.getId()).isEqualTo(item.getId());
         assertThat(result.getName()).isEqualTo(item.getName());
         assertThat(result.getCategory()).isEqualTo(item.getCategory());
         assertThat(result.getPrice()).isEqualTo(item.getPrice());
