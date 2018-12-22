@@ -5,7 +5,6 @@ import com.lm.shopping.business.converter.ItemConverter;
 import com.lm.shopping.persistence.dao.ItemDao;
 import com.lm.shopping.persistence.model.Item;
 import com.lm.shopping.persistence.model.ItemBuilder;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -30,11 +29,6 @@ public class ItemsServiceTest {
     @Mock private ItemConverter itemConverter;
     @InjectMocks private ItemsService service;
 
-    @Before
-    public void setUp() {
-        when(itemConverter.convertToBean(any())).thenCallRealMethod();
-    }
-
     @Test
     public void shouldGetItem() {
         // given
@@ -42,30 +36,23 @@ public class ItemsServiceTest {
         Item item = random(ItemBuilder.class)
                 .withId(id)
                 .build();
+        ItemBean itemBean = random(ItemBean.class);
 
         // when
         when(itemDao.loadById(any())).thenReturn(item);
+        when(itemConverter.convertToBean(any())).thenReturn(itemBean);
 
         Optional<ItemBean> result = service.getItem(id);
 
         // then
         assertThat(result.isPresent()).isTrue();
-        result.ifPresent(value ->
-                assertThat(value.getId().equals(item.getId()) &&
-                        value.getName().equals(item.getName()) &&
-                        value.getCategory().equals(item.getCategory()) &&
-                        value.getPrice().equals(item.getPrice()) &&
-                        value.getImported().equals(item.getImported())
-                ).isTrue());
+        result.ifPresent(value -> assertThat(value).isEqualTo(itemBean));
     }
 
     @Test
     public void shouldGetEmptyItem() {
         // given
         UUID id = UUID.randomUUID();
-        Item item = random(ItemBuilder.class)
-                .withId(id)
-                .build();
 
         // when
         when(itemDao.loadById(any())).thenReturn(null);
@@ -80,9 +67,11 @@ public class ItemsServiceTest {
     public void shouldGetItems() {
         // given
         List<Item> items = randomListOf(10, Item.class);
+        ItemBean itemBean = random(ItemBean.class);
 
         // when
         when(itemDao.loadAll()).thenReturn(items);
+        when(itemConverter.convertToBean(any())).thenReturn(itemBean);
 
         // when
         List<ItemBean> result = service.getItems();
@@ -90,13 +79,7 @@ public class ItemsServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).hasSameSizeAs(items);
-        assertThat(result.stream().allMatch(bean ->
-                items.stream().anyMatch(item -> item.getId().equals(bean.getId()) &&
-                        item.getName().equals(bean.getName()) &&
-                        item.getCategory().equals(bean.getCategory()) &&
-                        item.getPrice().equals(bean.getPrice()) &&
-                        item.getImported().equals(bean.getImported()))
-        ));
+        assertThat(result.stream().allMatch(bean -> bean.equals(itemBean)));
     }
 
     @Test
