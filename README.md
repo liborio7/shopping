@@ -29,7 +29,7 @@ See [API documentation](/apidoc.md) for further details.
 
 - Get all stored items
 - Calculate sales taxes for an item list
-- Separation, for each domain, of persistence model, business logic, and HTTP resources layers
+- Separation of persistence model, business logic, and HTTP resources layers
 - RESTful HTTP response codes
 - Unit tests
 - Integration tests

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lm.shopping.items.persistence.mapper.ItemMapper">
+<mapper namespace="com.lm.shopping.persistence.mapper.ItemMapper">
 
     <resultMap id="itemEntity" type="Item">
         <result column="id" property="id" typeHandler="UUIDTypeHandler"/>
@@ -12,11 +12,10 @@
         <result column="imported" property="imported"/>
     </resultMap>
 
-    <select id="loadById" parameterType="Item"
-            resultMap="itemEntity">
+    <select id="loadById" parameterType="Item" resultMap="itemEntity">
         SELECT *
         FROM `item`
-        WHERE 'id' = #{id}
+        WHERE `id` = #{id}
     </select>
 
     <select id="loadAll" resultMap="itemEntity">

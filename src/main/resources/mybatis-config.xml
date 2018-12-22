@@ -8,7 +8,7 @@
         <typeAlias alias="UUID" type="java.util.UUID"/>
         <typeAlias alias="UUIDTypeHandler" type="com.lm.shopping.common.persistence.UUIDTypeHandler"/>
 
-        <package name="com.lm.shopping.items.persistence.model"/>
+        <package name="com.lm.shopping.persistence.model"/>
     </typeAliases>
 
     <typeHandlers>
