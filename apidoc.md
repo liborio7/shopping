@@ -1,6 +1,7 @@
 # REST API documentation
 
 * _GET v1/items_
+* _GET v1/items/{uid}_
 * _POST v1/sales/taxes_
 
 
@@ -45,6 +46,39 @@ Array list of:
         "imported": false
     }
 ]
+```
+
+## [GET] items/{uid}
+
+    GET v1/items/{uid}
+
+Get an item by id.
+
+### Response
+- **id** — The item ID
+- **name** — The item name
+- **category** — The item category (BOOK, FOOD, MEDICAL or OTHER)
+- **price** — The item price
+- **imported** — True if the item is imported, false otherwise
+
+### Errors
+- **404** - Item not found
+- **500** - Unhandled internal server error
+
+### Example
+**Request**
+
+    https://localhost:9999/v1/items/67870ad6-bc7c-47cb-bcad-96b18b2366ad
+
+**Return** 
+``` json
+{
+    "id": "67870ad6-bc7c-47cb-bcad-96b18b2366ad",
+    "name": "book",
+    "category": "BOOK",
+    "price": 12.49,
+    "imported": false
+}
 ```
 
 ## [POST] sales taxes

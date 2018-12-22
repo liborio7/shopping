@@ -79,7 +79,7 @@ public class ItemsServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).hasSameSizeAs(items);
-        assertThat(result.stream().allMatch(bean -> bean.equals(itemBean)));
+        assertThat(result.stream().allMatch(bean -> bean.equals(itemBean))).isTrue();
     }
 
     @Test

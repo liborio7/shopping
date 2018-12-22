@@ -28,6 +28,7 @@ See [API documentation](/apidoc.md) for further details.
 ### Features
 
 - Get all stored items
+- Get an item by id
 - Calculate sales taxes for an item list
 - Separation of persistence model, business logic, and HTTP resources layers
 - RESTful HTTP response codes
@@ -52,9 +53,6 @@ See [API documentation](/apidoc.md) for further details.
 ### Future improvements
 
 - Create new items
-- Store created sales taxes
-- Retrieve an already calculated sales taxes
-- Add a new item to sales taxes
-- Remove an item from sales taxes
-- Edit item amount on sales taxes
-- Multiple currency and exchange rate on sales taxes
+- Store created sales as the POST method suggests
+- Retrieve a created sale
+- Multiple currency and exchange rate on sales

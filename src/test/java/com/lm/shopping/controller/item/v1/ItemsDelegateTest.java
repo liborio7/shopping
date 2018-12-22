@@ -44,7 +44,7 @@ public class ItemsDelegateTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.stream().allMatch(item -> item.equals(itemResponseBean)));
+        assertThat(result.stream().allMatch(item -> item.equals(itemResponseBean))).isTrue();
     }
 
     @Test
