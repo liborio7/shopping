@@ -18,6 +18,7 @@ public class SalesTaxesService {
     private final Logger logger = LoggerFactory.getLogger(SalesTaxesService.class);
 
     @Inject private ItemsService itemsService;
+    @Inject private PriceService priceService;
 
     public SalesTaxesItemBean calculateSalesTaxes(UUID itemId, Long amount) throws ItemNotFoundException, InvalidItemAmountException {
         logger.info("calculate sales taxes for #{} item id {}", amount, itemId);
@@ -30,18 +31,21 @@ public class SalesTaxesService {
         ItemBean itemBean = itemsService.getItem(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("no item found with id " + itemId));
 
-        Long tax = calculateSalesTaxes(itemBean);
+        BigDecimal tax = calculateSalesTaxes(itemBean);
+        BigDecimal saleTax = tax.multiply(new BigDecimal(amount));
+        BigDecimal total = tax.add(new BigDecimal(itemBean.getPrice())).multiply(new BigDecimal(amount));
+
         return new SalesTaxesItemBeanBuilder()
                 .withItem(itemBean)
                 .withAmount(amount)
-                .withSaleTax(tax * amount)
-                .withTotal((itemBean.getPrice() + tax) * amount)
+                .withSaleTax(priceService.toLong(saleTax))
+                .withTotal(priceService.toLong(total))
                 .build();
     }
 
     //============
 
-    Long calculateSalesTaxes(ItemBean item) {
+    BigDecimal calculateSalesTaxes(ItemBean item) {
         logger.info("calculate sales taxes for item: {}", item);
 
         BigDecimal tax = BigDecimal.ZERO;
@@ -50,7 +54,7 @@ public class SalesTaxesService {
             tax = tax.add(calculateImportTax(item));
         }
 
-        return roundToNearestFive(tax);
+        return priceService.roundToNearestFive(tax);
     }
 
     BigDecimal calculateCategoryTax(ItemBean item) {
@@ -69,9 +73,5 @@ public class SalesTaxesService {
     BigDecimal calculateImportTax(ItemBean item) {
         return new BigDecimal(item.getPrice())
                 .multiply(new BigDecimal(0.05d));
-    }
-
-    Long roundToNearestFive(BigDecimal tax) {
-        return 5 * (Math.round(tax.doubleValue() / 5));
     }
 }
