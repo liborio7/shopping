@@ -75,8 +75,8 @@ public class SalesTaxesServiceTest {
 
         // then
         BigDecimal expectedTax = service.calculateSalesTaxes(itemBean);
-        BigDecimal expectedSaleTax = expectedTax.multiply(new BigDecimal(amount));
-        BigDecimal expectedTotal = expectedTax.add(itemBean.getPrice()).multiply(new BigDecimal(amount));
+        BigDecimal expectedSaleTax = expectedTax.multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal expectedTotal = expectedTax.add(itemBean.getPrice()).multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
 
         assertThat(result).isNotNull();
         assertThat(result.getItem()).isEqualTo(itemBean);

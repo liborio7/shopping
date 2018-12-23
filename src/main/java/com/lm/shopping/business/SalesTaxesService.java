@@ -36,8 +36,13 @@ public class SalesTaxesService {
                 .orElseThrow(() -> new ItemNotFoundException("no item found with id " + itemId));
 
         BigDecimal tax = calculateSalesTaxes(itemBean);
+        logger.debug("calculated sales taxes: {}", tax);
+
         BigDecimal saleTax = tax.multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
+        logger.debug("sales taxes sum: {}", saleTax);
+
         BigDecimal total = tax.add(itemBean.getPrice()).multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
+        logger.debug("total sum: {}", total);
 
         return new SalesTaxesItemBeanBuilder()
                 .withItem(itemBean)

@@ -102,7 +102,7 @@ public class PriceServiceTest {
         BigDecimal result = service.roundToNearestFiveCent(price);
 
         // then
-        assertThat(result).isEqualTo(new BigDecimal(2.00).setScale(2, RoundingMode.HALF_UP));
+        assertThat(result).isEqualTo(new BigDecimal(2.05).setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test

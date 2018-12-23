@@ -30,6 +30,8 @@ public class ItemsDelegate {
     }
 
     public ItemResponseBean getItem(UUID id) {
+        logger.info("get item with id: {}", id);
+
         return itemsService.getItem(id)
                 .map(itemBeanConverter::convertToResponseBean)
                 .orElseThrow(NotFoundException::new);
