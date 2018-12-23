@@ -7,7 +7,7 @@ import org.junit.Before;
 
 import javax.inject.Inject;
 
-abstract class BaseDaoTest {
+public abstract class BaseDaoTest {
 
     @Inject SqlSessionFactory sqlSessionFactory;
 

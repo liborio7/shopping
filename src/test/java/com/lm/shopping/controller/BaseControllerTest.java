@@ -9,9 +9,9 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
-abstract class BaseControllerTest extends JerseyTest {
+public abstract class BaseControllerTest extends JerseyTest {
 
-    static ObjectMapper objectMapper = AppObjectMapper.getObjectMapper();
+    protected static ObjectMapper objectMapper = AppObjectMapper.getObjectMapper();
 
     @Override
     protected Application configure() {
