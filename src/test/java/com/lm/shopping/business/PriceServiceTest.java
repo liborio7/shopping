@@ -26,7 +26,7 @@ public class PriceServiceTest {
         BigDecimal result = service.toBigDecimal(price);
 
         // then
-        assertThat(result).isEqualTo(new BigDecimal(1.00D).setScale(2, RoundingMode.HALF_UP));
+        assertThat(result).isEqualTo(new BigDecimal(1.00).setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class PriceServiceTest {
         BigDecimal result = service.toBigDecimal(price);
 
         // then
-        assertThat(result).isEqualTo(new BigDecimal(1.01D).setScale(2, RoundingMode.HALF_UP));
+        assertThat(result).isEqualTo(new BigDecimal(1.01).setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class PriceServiceTest {
         BigDecimal result = service.toBigDecimal(price);
 
         // then
-        assertThat(result).isEqualTo(new BigDecimal(1.99D).setScale(2, RoundingMode.HALF_UP));
+        assertThat(result).isEqualTo(new BigDecimal(1.99).setScale(2, RoundingMode.HALF_UP));
     }
 
     //============ to long
@@ -58,7 +58,7 @@ public class PriceServiceTest {
     @Test
     public void shouldConvertFromBigDecimalToLong1() {
         // given
-        BigDecimal price = new BigDecimal(1.00D);
+        BigDecimal price = new BigDecimal(1.00);
 
         // when
         Long result = service.toLong(price);
@@ -70,7 +70,7 @@ public class PriceServiceTest {
     @Test
     public void shouldConvertFromBigDecimalToLong2() {
         // given
-        BigDecimal price = new BigDecimal(1.11111D);
+        BigDecimal price = new BigDecimal(1.11111);
 
         // when
         Long result = service.toLong(price);
@@ -82,7 +82,7 @@ public class PriceServiceTest {
     @Test
     public void shouldConvertFromBigDecimalToLong3() {
         // given
-        BigDecimal price = new BigDecimal(1.9966D);
+        BigDecimal price = new BigDecimal(1.9966);
 
         // when
         Long result = service.toLong(price);
@@ -96,36 +96,36 @@ public class PriceServiceTest {
     @Test
     public void shouldRoundToNearestFive1() {
         // given
-        BigDecimal price = new BigDecimal(2.4);
+        BigDecimal price = new BigDecimal(2.02);
 
         // when
-        BigDecimal result = service.roundToNearestFive(price);
+        BigDecimal result = service.roundToNearestFiveCent(price);
 
         // then
-        assertThat(result).isEqualTo(new BigDecimal(0.00D).setScale(0, RoundingMode.HALF_UP));
+        assertThat(result).isEqualTo(new BigDecimal(2.00).setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test
     public void shouldRoundToNearestFive2() {
         // given
-        BigDecimal price = new BigDecimal(2.5);
+        BigDecimal price = new BigDecimal(2.04);
 
         // when
-        BigDecimal result = service.roundToNearestFive(price);
+        BigDecimal result = service.roundToNearestFiveCent(price);
 
         // then
-        assertThat(result).isEqualTo(new BigDecimal(5D).setScale(0, RoundingMode.HALF_UP));
+        assertThat(result).isEqualTo(new BigDecimal(2.05).setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test
     public void shouldRoundToNearestFive3() {
         // given
-        BigDecimal price = new BigDecimal(2.6);
+        BigDecimal price = new BigDecimal(2.05);
 
         // when
-        BigDecimal result = service.roundToNearestFive(price);
+        BigDecimal result = service.roundToNearestFiveCent(price);
 
         // then
-        assertThat(result).isEqualTo(new BigDecimal(5.00D).setScale(0, RoundingMode.HALF_UP));
+        assertThat(result).isEqualTo(new BigDecimal(2.05).setScale(2, RoundingMode.HALF_UP));
     }
 }

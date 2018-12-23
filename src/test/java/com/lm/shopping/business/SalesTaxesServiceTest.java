@@ -15,9 +15,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.lm.shopping.business.SalesTaxesService.IMPORT_TAX;
+import static com.lm.shopping.business.SalesTaxesService.OTHER_CATEGORY_TAX;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,8 +36,7 @@ public class SalesTaxesServiceTest {
 
     @Before
     public void setUp() {
-        when(priceService.toLong(any())).thenCallRealMethod();
-        when(priceService.roundToNearestFive(any())).thenCallRealMethod();
+        when(priceService.roundToNearestFiveCent(any())).thenCallRealMethod();
     }
 
     @Test(expected = InvalidItemAmountException.class)
@@ -73,8 +75,8 @@ public class SalesTaxesServiceTest {
 
         // then
         BigDecimal expectedTax = service.calculateSalesTaxes(itemBean);
-        Long expectedSaleTax = priceService.toLong(expectedTax.multiply(new BigDecimal(amount)));
-        Long expectedTotal = priceService.toLong(expectedTax.add(new BigDecimal(itemBean.getPrice())).multiply(new BigDecimal(amount)));
+        BigDecimal expectedSaleTax = expectedTax.multiply(new BigDecimal(amount));
+        BigDecimal expectedTotal = expectedTax.add(itemBean.getPrice()).multiply(new BigDecimal(amount));
 
         assertThat(result).isNotNull();
         assertThat(result.getItem()).isEqualTo(itemBean);
@@ -86,7 +88,8 @@ public class SalesTaxesServiceTest {
     @Test
     public void shouldCalculateSalesTaxesForExemptedCategoryAndNotImportedItem() {
         // given
-        ItemBean itemBean = random(ItemBeanBuilder.class)
+        ItemBean itemBean = new ItemBeanBuilder()
+                .withPrice(new BigDecimal(1.00))
                 .withCategory(ItemCategoryEnum.FOOD)
                 .withImported(false)
                 .build();
@@ -95,13 +98,14 @@ public class SalesTaxesServiceTest {
         BigDecimal tax = service.calculateSalesTaxes(itemBean);
 
         // then
-        assertThat(tax).isEqualTo(BigDecimal.ZERO);
+        assertThat(tax).isEqualTo(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test
     public void shouldCalculateSalesTaxesForOtherCategoryAndNotImportedItem() {
         // given
-        ItemBean itemBean = random(ItemBeanBuilder.class)
+        ItemBean itemBean = new ItemBeanBuilder()
+                .withPrice(new BigDecimal(1.00))
                 .withCategory(ItemCategoryEnum.OTHER)
                 .withImported(false)
                 .build();
@@ -110,16 +114,14 @@ public class SalesTaxesServiceTest {
         BigDecimal tax = service.calculateSalesTaxes(itemBean);
 
         // then
-        BigDecimal expectedTax = priceService.roundToNearestFive(
-                service.calculateCategoryTax(itemBean));
-
-        assertThat(tax).isEqualTo(expectedTax);
+        assertThat(tax).isEqualTo(OTHER_CATEGORY_TAX);
     }
 
     @Test
     public void shouldCalculateSalesTaxesForExemptedCategoryAndImportedItem() {
         // given
         ItemBean itemBean = random(ItemBeanBuilder.class)
+                .withPrice(new BigDecimal(1.00))
                 .withCategory(ItemCategoryEnum.MEDICAL)
                 .withImported(true)
                 .build();
@@ -128,16 +130,14 @@ public class SalesTaxesServiceTest {
         BigDecimal tax = service.calculateSalesTaxes(itemBean);
 
         // then
-        BigDecimal expectedTax = priceService.roundToNearestFive(
-                service.calculateImportTax(itemBean));
-
-        assertThat(tax).isEqualTo(expectedTax);
+        assertThat(tax).isEqualTo(IMPORT_TAX);
     }
 
     @Test
     public void shouldCalculateSalesTaxesForOtherCategoryAndImportedItem() {
         // given
-        ItemBean itemBean = random(ItemBeanBuilder.class)
+        ItemBean itemBean = new ItemBeanBuilder()
+                .withPrice(new BigDecimal(1.00))
                 .withCategory(ItemCategoryEnum.OTHER)
                 .withImported(true)
                 .build();
@@ -146,9 +146,6 @@ public class SalesTaxesServiceTest {
         BigDecimal tax = service.calculateSalesTaxes(itemBean);
 
         // then
-        BigDecimal expectedTax = priceService.roundToNearestFive(
-                service.calculateCategoryTax(itemBean).add(service.calculateImportTax(itemBean)));
-
-        assertThat(tax).isEqualTo(expectedTax);
+        assertThat(tax).isEqualTo(OTHER_CATEGORY_TAX.add(IMPORT_TAX));
     }
 }

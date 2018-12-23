@@ -2,13 +2,14 @@ package com.lm.shopping.business.bean;
 
 import com.lm.shopping.common.enums.ItemCategoryEnum;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ItemBeanBuilder {
     private UUID id;
     private String name;
     private ItemCategoryEnum category;
-    private Long price;
+    private BigDecimal price;
     private Boolean imported;
 
     public ItemBeanBuilder withId(UUID id) {
@@ -26,7 +27,7 @@ public class ItemBeanBuilder {
         return this;
     }
 
-    public ItemBeanBuilder withPrice(Long price) {
+    public ItemBeanBuilder withPrice(BigDecimal price) {
         this.price = price;
         return this;
     }

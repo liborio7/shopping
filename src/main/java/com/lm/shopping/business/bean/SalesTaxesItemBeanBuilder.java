@@ -1,10 +1,12 @@
 package com.lm.shopping.business.bean;
 
+import java.math.BigDecimal;
+
 public class SalesTaxesItemBeanBuilder {
     private ItemBean item;
     private Long amount;
-    private Long saleTax;
-    private Long total;
+    private BigDecimal saleTax;
+    private BigDecimal total;
 
     public SalesTaxesItemBeanBuilder withItem(ItemBean item) {
         this.item = item;
@@ -16,12 +18,12 @@ public class SalesTaxesItemBeanBuilder {
         return this;
     }
 
-    public SalesTaxesItemBeanBuilder withSaleTax(Long saleTax) {
+    public SalesTaxesItemBeanBuilder withSaleTax(BigDecimal saleTax) {
         this.saleTax = saleTax;
         return this;
     }
 
-    public SalesTaxesItemBeanBuilder withTotal(Long total) {
+    public SalesTaxesItemBeanBuilder withTotal(BigDecimal total) {
         this.total = total;
         return this;
     }

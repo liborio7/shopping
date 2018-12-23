@@ -3,6 +3,7 @@ package com.lm.shopping.business.bean;
 import com.lm.shopping.common.bean.LoggableBean;
 import com.lm.shopping.common.enums.ItemCategoryEnum;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ItemBean extends LoggableBean {
@@ -10,13 +11,13 @@ public class ItemBean extends LoggableBean {
     private UUID id;
     private String name;
     private ItemCategoryEnum category;
-    private Long price;
+    private BigDecimal price;
     private Boolean imported;
 
     public ItemBean() {
     }
 
-    public ItemBean(UUID id, String name, ItemCategoryEnum category, Long price, Boolean imported) {
+    public ItemBean(UUID id, String name, ItemCategoryEnum category, BigDecimal price, Boolean imported) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -48,11 +49,11 @@ public class ItemBean extends LoggableBean {
         this.category = category;
     }
 
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

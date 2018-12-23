@@ -10,20 +10,21 @@ public class PriceService {
 
     public BigDecimal toBigDecimal(Long price) {
         return new BigDecimal(price)
-                .divide(new BigDecimal(100D), 2, RoundingMode.HALF_UP);
+                .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
     }
 
     public Long toLong(BigDecimal price) {
         return price
-                .multiply(new BigDecimal(100D))
+                .multiply(new BigDecimal(100))
                 .setScale(0, RoundingMode.HALF_UP)
                 .longValue();
     }
 
-    public BigDecimal roundToNearestFive(BigDecimal price) {
+    public BigDecimal roundToNearestFiveCent(BigDecimal price) {
         return price
-                .divide(new BigDecimal(5), 0, RoundingMode.HALF_UP)
-                .multiply(new BigDecimal(5));
+                .divide(new BigDecimal(0.05), 0, RoundingMode.CEILING)
+                .multiply(new BigDecimal(0.05))
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
 }

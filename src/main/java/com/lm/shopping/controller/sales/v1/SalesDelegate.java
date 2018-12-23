@@ -1,6 +1,5 @@
 package com.lm.shopping.controller.sales.v1;
 
-import com.lm.shopping.business.PriceService;
 import com.lm.shopping.business.SalesTaxesService;
 import com.lm.shopping.business.bean.ItemBean;
 import com.lm.shopping.business.bean.SalesTaxesItemBean;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.BadRequestException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,6 @@ import java.util.List;
 public class SalesDelegate {
     private final Logger logger = LoggerFactory.getLogger(SalesDelegate.class);
 
-    @Inject private PriceService priceService;
     @Inject private SalesTaxesService salesTaxesService;
 
     public SalesResponseBean insertSales(SalesItemRequestBean[] requestBeans) {
@@ -28,8 +27,8 @@ public class SalesDelegate {
 
         try {
             List<SalesItemResponseBean> items = new ArrayList<>();
-            Long salesTaxes = 0L;
-            Long total = 0L;
+            BigDecimal salesTaxes = new BigDecimal(0);
+            BigDecimal total = new BigDecimal(0);
             for (SalesItemRequestBean requestBean : requestBeans) {
 
                 SalesTaxesItemBean salesTaxesItemBean = salesTaxesService.calculateSalesTaxes(requestBean.getItemId(), requestBean.getAmount());
@@ -40,17 +39,17 @@ public class SalesDelegate {
                         .withAmount(salesTaxesItemBean.getAmount())
                         .withName(item.getName())
                         .withCategory(item.getCategory())
-                        .withPrice(priceService.toBigDecimal(salesTaxesItemBean.getTotal()))
+                        .withPrice(salesTaxesItemBean.getTotal())
                         .withImported(item.getImported())
                         .build());
-                salesTaxes += salesTaxesItemBean.getSaleTax();
-                total += salesTaxesItemBean.getTotal();
+                salesTaxes = salesTaxes.add(salesTaxesItemBean.getSaleTax());
+                total = total.add(salesTaxesItemBean.getTotal());
             }
 
             return new SalesResponseBeanBuilder()
                     .withItems(items)
-                    .withSalesTaxes(priceService.toBigDecimal(salesTaxes))
-                    .withTotal(priceService.toBigDecimal(total))
+                    .withSalesTaxes(salesTaxes)
+                    .withTotal(total)
                     .build();
 
         } catch (ItemNotFoundException | InvalidItemAmountException e) {

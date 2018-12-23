@@ -2,17 +2,19 @@ package com.lm.shopping.business.bean;
 
 import com.lm.shopping.common.bean.LoggableBean;
 
+import java.math.BigDecimal;
+
 public class SalesTaxesItemBean extends LoggableBean {
 
     private ItemBean item;
     private Long amount;
-    private Long saleTax;
-    private Long total;
+    private BigDecimal saleTax;
+    private BigDecimal total;
 
     public SalesTaxesItemBean() {
     }
 
-    public SalesTaxesItemBean(ItemBean item, Long amount, Long saleTax, Long total) {
+    public SalesTaxesItemBean(ItemBean item, Long amount, BigDecimal saleTax, BigDecimal total) {
         this.item = item;
         this.amount = amount;
         this.saleTax = saleTax;
@@ -35,19 +37,19 @@ public class SalesTaxesItemBean extends LoggableBean {
         this.amount = amount;
     }
 
-    public Long getSaleTax() {
+    public BigDecimal getSaleTax() {
         return saleTax;
     }
 
-    public void setSaleTax(Long saleTax) {
+    public void setSaleTax(BigDecimal saleTax) {
         this.saleTax = saleTax;
     }
 
-    public Long getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Long total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 }

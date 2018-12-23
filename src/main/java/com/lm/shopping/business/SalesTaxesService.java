@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 @Singleton
@@ -19,6 +20,9 @@ public class SalesTaxesService {
 
     @Inject private ItemsService itemsService;
     @Inject private PriceService priceService;
+
+    static final BigDecimal OTHER_CATEGORY_TAX = new BigDecimal(0.10).setScale(2, RoundingMode.HALF_UP);
+    static final BigDecimal IMPORT_TAX = new BigDecimal(0.05).setScale(2, RoundingMode.HALF_UP);
 
     public SalesTaxesItemBean calculateSalesTaxes(UUID itemId, Long amount) throws ItemNotFoundException, InvalidItemAmountException {
         logger.info("calculate sales taxes for #{} item id {}", amount, itemId);
@@ -32,14 +36,14 @@ public class SalesTaxesService {
                 .orElseThrow(() -> new ItemNotFoundException("no item found with id " + itemId));
 
         BigDecimal tax = calculateSalesTaxes(itemBean);
-        BigDecimal saleTax = tax.multiply(new BigDecimal(amount));
-        BigDecimal total = tax.add(new BigDecimal(itemBean.getPrice())).multiply(new BigDecimal(amount));
+        BigDecimal saleTax = tax.multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = tax.add(itemBean.getPrice()).multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
 
         return new SalesTaxesItemBeanBuilder()
                 .withItem(itemBean)
                 .withAmount(amount)
-                .withSaleTax(priceService.toLong(saleTax))
-                .withTotal(priceService.toLong(total))
+                .withSaleTax(saleTax)
+                .withTotal(total)
                 .build();
     }
 
@@ -48,16 +52,16 @@ public class SalesTaxesService {
     BigDecimal calculateSalesTaxes(ItemBean item) {
         logger.info("calculate sales taxes for item: {}", item);
 
-        BigDecimal tax = BigDecimal.ZERO;
+        BigDecimal tax = new BigDecimal(0);
         tax = tax.add(calculateCategoryTax(item));
         if (item.getImported()) {
             tax = tax.add(calculateImportTax(item));
         }
 
-        return priceService.roundToNearestFive(tax);
+        return priceService.roundToNearestFiveCent(tax);
     }
 
-    BigDecimal calculateCategoryTax(ItemBean item) {
+    private BigDecimal calculateCategoryTax(ItemBean item) {
         switch (item.getCategory()) {
             case BOOK:
             case FOOD:
@@ -65,13 +69,11 @@ public class SalesTaxesService {
                 return BigDecimal.ZERO;
             case OTHER:
             default:
-                return new BigDecimal(item.getPrice())
-                        .multiply(new BigDecimal(0.1d));
+                return item.getPrice().multiply(OTHER_CATEGORY_TAX);
         }
     }
 
-    BigDecimal calculateImportTax(ItemBean item) {
-        return new BigDecimal(item.getPrice())
-                .multiply(new BigDecimal(0.05d));
+    private BigDecimal calculateImportTax(ItemBean item) {
+        return item.getPrice().multiply(IMPORT_TAX);
     }
 }
