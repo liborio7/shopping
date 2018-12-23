@@ -20,7 +20,7 @@ public class PriceService {
                 .longValue();
     }
 
-    public BigDecimal roundToNearestFiveCent(BigDecimal price) {
+    public BigDecimal roundUpToNearestFiveCent(BigDecimal price) {
         return price
                 .divide(new BigDecimal(0.05), 0, RoundingMode.CEILING)
                 .multiply(new BigDecimal(0.05))

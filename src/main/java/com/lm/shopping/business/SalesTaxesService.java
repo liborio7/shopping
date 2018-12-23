@@ -24,29 +24,31 @@ public class SalesTaxesService {
     static final BigDecimal OTHER_CATEGORY_TAX = new BigDecimal(0.10).setScale(2, RoundingMode.HALF_UP);
     static final BigDecimal IMPORT_TAX = new BigDecimal(0.05).setScale(2, RoundingMode.HALF_UP);
 
-    public SalesTaxesItemBean calculateSalesTaxes(UUID itemId, Long amount) throws ItemNotFoundException, InvalidItemAmountException {
-        logger.info("calculate sales taxes for #{} item id {}", amount, itemId);
+    public SalesTaxesItemBean calculateSalesTaxes(UUID itemId, Long itemAmount) throws ItemNotFoundException, InvalidItemAmountException {
+        logger.info("calculate sales taxes for #{} item id {}", itemAmount, itemId);
 
-        if (amount <= 0) {
-            logger.warn("wrong item amount {}", amount);
-            throw new InvalidItemAmountException(amount + " is not a valid amount");
+        if (itemAmount <= 0) {
+            logger.warn("wrong item amount {}", itemAmount);
+            throw new InvalidItemAmountException(itemAmount + " is not a valid amount");
         }
 
         ItemBean itemBean = itemsService.getItem(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("no item found with id " + itemId));
+        BigDecimal price = itemBean.getPrice();
+        BigDecimal amount = new BigDecimal(itemAmount).setScale(0, RoundingMode.HALF_UP);
 
         BigDecimal tax = calculateSalesTaxes(itemBean);
         logger.debug("calculated sales taxes: {}", tax);
 
-        BigDecimal saleTax = tax.multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal saleTax = tax.multiply(amount);
         logger.debug("sales taxes sum: {}", saleTax);
 
-        BigDecimal total = tax.add(itemBean.getPrice()).multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = tax.add(price).multiply(amount);
         logger.debug("total sum: {}", total);
 
         return new SalesTaxesItemBeanBuilder()
                 .withItem(itemBean)
-                .withAmount(amount)
+                .withAmount(itemAmount)
                 .withSaleTax(saleTax)
                 .withTotal(total)
                 .build();
@@ -63,7 +65,7 @@ public class SalesTaxesService {
             tax = tax.add(calculateImportTax(item));
         }
 
-        return priceService.roundToNearestFiveCent(tax);
+        return priceService.roundUpToNearestFiveCent(tax);
     }
 
     private BigDecimal calculateCategoryTax(ItemBean item) {

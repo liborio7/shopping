@@ -36,7 +36,7 @@ public class SalesTaxesServiceTest {
 
     @Before
     public void setUp() {
-        when(priceService.roundToNearestFiveCent(any())).thenCallRealMethod();
+        when(priceService.roundUpToNearestFiveCent(any())).thenCallRealMethod();
     }
 
     @Test(expected = InvalidItemAmountException.class)
@@ -65,22 +65,27 @@ public class SalesTaxesServiceTest {
     public void shouldCalculateSalesTaxesForItemUid() throws InvalidItemAmountException, ItemNotFoundException {
         // given
         UUID id = UUID.randomUUID();
-        Long amount = RandomUtils.nextLong(1, 10);
-        ItemBean itemBean = random(ItemBean.class);
+        Long itemAmount = RandomUtils.nextLong(1, 10);
+        ItemBean itemBean = random(ItemBeanBuilder.class)
+                .withPrice(new BigDecimal(RandomUtils.nextDouble(0.01, 10.00)).setScale(2, RoundingMode.HALF_UP))
+                .build();
 
         // when
         when(itemsService.getItem(eq(id))).thenReturn(Optional.of(itemBean));
 
-        SalesTaxesItemBean result = service.calculateSalesTaxes(id, amount);
+        SalesTaxesItemBean result = service.calculateSalesTaxes(id, itemAmount);
 
         // then
+        BigDecimal price = itemBean.getPrice();
+        BigDecimal amount = new BigDecimal(itemAmount).setScale(0, RoundingMode.HALF_UP);
+
         BigDecimal expectedTax = service.calculateSalesTaxes(itemBean);
-        BigDecimal expectedSaleTax = expectedTax.multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal expectedTotal = expectedTax.add(itemBean.getPrice()).multiply(new BigDecimal(amount)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal expectedSaleTax = expectedTax.multiply(amount);
+        BigDecimal expectedTotal = expectedTax.add(price).multiply(amount);
 
         assertThat(result).isNotNull();
         assertThat(result.getItem()).isEqualTo(itemBean);
-        assertThat(result.getAmount()).isEqualTo(amount);
+        assertThat(result.getAmount()).isEqualTo(itemAmount);
         assertThat(result.getSaleTax()).isEqualTo(expectedSaleTax);
         assertThat(result.getTotal()).isEqualTo(expectedTotal);
     }

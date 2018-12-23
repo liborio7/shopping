@@ -94,36 +94,36 @@ public class PriceServiceTest {
     //============ round to nearest five
 
     @Test
-    public void shouldRoundToNearestFive1() {
+    public void shouldUpRoundToNearestFiveCent1() {
         // given
         BigDecimal price = new BigDecimal(2.02);
 
         // when
-        BigDecimal result = service.roundToNearestFiveCent(price);
+        BigDecimal result = service.roundUpToNearestFiveCent(price);
 
         // then
         assertThat(result).isEqualTo(new BigDecimal(2.05).setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test
-    public void shouldRoundToNearestFive2() {
+    public void shouldUpRoundToNearestFiveCent2() {
         // given
         BigDecimal price = new BigDecimal(2.04);
 
         // when
-        BigDecimal result = service.roundToNearestFiveCent(price);
+        BigDecimal result = service.roundUpToNearestFiveCent(price);
 
         // then
         assertThat(result).isEqualTo(new BigDecimal(2.05).setScale(2, RoundingMode.HALF_UP));
     }
 
     @Test
-    public void shouldRoundToNearestFive3() {
+    public void shouldUpRoundToNearestFiveCent3() {
         // given
         BigDecimal price = new BigDecimal(2.05);
 
         // when
-        BigDecimal result = service.roundToNearestFiveCent(price);
+        BigDecimal result = service.roundUpToNearestFiveCent(price);
 
         // then
         assertThat(result).isEqualTo(new BigDecimal(2.05).setScale(2, RoundingMode.HALF_UP));
